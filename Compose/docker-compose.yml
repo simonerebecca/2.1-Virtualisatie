@@ -1,0 +1,22 @@
+# Student: Simone Verhagen
+# Studentnummer: 494729
+
+services:
+  whoami:
+    image: traefik/whoami
+    container_name: whoami
+    networks: [appnet]
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on: [whoami]
+    networks: [appnet]
+
+networks:
+  appnet:
+    driver: bridge
